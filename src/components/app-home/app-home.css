@@ -1,0 +1,14 @@
+.app-home {
+  height: 100vh;
+  width: 100vw;
+  background-color: #2a3439;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+  font-family: 'Graduate', cursive;
+}
