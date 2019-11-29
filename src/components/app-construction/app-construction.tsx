@@ -5,7 +5,7 @@ import { Component, h } from '@stencil/core';
   styleUrl: 'app-construction.css',
   shadow: true
 })
-export class AppHome {
+export class AppConstruction {
   render() {
     return (
       <div class='app-construction'>
