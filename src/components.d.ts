@@ -10,17 +10,52 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface AppConstruction {}
+  interface AppGame {}
   interface AppHome {}
+  interface AppInfo {}
+  interface AppNavbar {}
+  interface AppNews {}
   interface AppRoot {}
 }
 
 declare global {
 
 
+  interface HTMLAppConstructionElement extends Components.AppConstruction, HTMLStencilElement {}
+  var HTMLAppConstructionElement: {
+    prototype: HTMLAppConstructionElement;
+    new (): HTMLAppConstructionElement;
+  };
+
+  interface HTMLAppGameElement extends Components.AppGame, HTMLStencilElement {}
+  var HTMLAppGameElement: {
+    prototype: HTMLAppGameElement;
+    new (): HTMLAppGameElement;
+  };
+
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
     new (): HTMLAppHomeElement;
+  };
+
+  interface HTMLAppInfoElement extends Components.AppInfo, HTMLStencilElement {}
+  var HTMLAppInfoElement: {
+    prototype: HTMLAppInfoElement;
+    new (): HTMLAppInfoElement;
+  };
+
+  interface HTMLAppNavbarElement extends Components.AppNavbar, HTMLStencilElement {}
+  var HTMLAppNavbarElement: {
+    prototype: HTMLAppNavbarElement;
+    new (): HTMLAppNavbarElement;
+  };
+
+  interface HTMLAppNewsElement extends Components.AppNews, HTMLStencilElement {}
+  var HTMLAppNewsElement: {
+    prototype: HTMLAppNewsElement;
+    new (): HTMLAppNewsElement;
   };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
@@ -29,17 +64,32 @@ declare global {
     new (): HTMLAppRootElement;
   };
   interface HTMLElementTagNameMap {
+    'app-construction': HTMLAppConstructionElement;
+    'app-game': HTMLAppGameElement;
     'app-home': HTMLAppHomeElement;
+    'app-info': HTMLAppInfoElement;
+    'app-navbar': HTMLAppNavbarElement;
+    'app-news': HTMLAppNewsElement;
     'app-root': HTMLAppRootElement;
   }
 }
 
 declare namespace LocalJSX {
+  interface AppConstruction {}
+  interface AppGame {}
   interface AppHome {}
+  interface AppInfo {}
+  interface AppNavbar {}
+  interface AppNews {}
   interface AppRoot {}
 
   interface IntrinsicElements {
+    'app-construction': AppConstruction;
+    'app-game': AppGame;
     'app-home': AppHome;
+    'app-info': AppInfo;
+    'app-navbar': AppNavbar;
+    'app-news': AppNews;
     'app-root': AppRoot;
   }
 }
@@ -50,7 +100,12 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
+      'app-construction': LocalJSX.AppConstruction & JSXBase.HTMLAttributes<HTMLAppConstructionElement>;
+      'app-game': LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
+      'app-info': LocalJSX.AppInfo & JSXBase.HTMLAttributes<HTMLAppInfoElement>;
+      'app-navbar': LocalJSX.AppNavbar & JSXBase.HTMLAttributes<HTMLAppNavbarElement>;
+      'app-news': LocalJSX.AppNews & JSXBase.HTMLAttributes<HTMLAppNewsElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
     }
   }

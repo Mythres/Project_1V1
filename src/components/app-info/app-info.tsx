@@ -1,16 +1,15 @@
 import { Component, Host, h } from '@stencil/core';
 
 @Component({
-  tag: 'app-home',
-  styleUrl: 'app-home.css',
+  tag: 'app-info',
+  styleUrl: 'app-info.css',
   shadow: true
 })
-export class AppHome {
+export class AppInfo {
 
   render() {
     return (
-      <div id="appHome">
-      </div>
+      <div></div>
     );
   }
 

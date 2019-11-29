@@ -1,0 +1,10 @@
+#root {
+  height: calc(100vh - 5em);
+  width: 100vw;
+}
+
+#pageContent {
+  height: 100%;
+  width: 100%;
+  background-color: #232c30;
+}
