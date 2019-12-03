@@ -4,7 +4,15 @@ describe('app-root', () => {
 
   it('renders', async () => {
     const page = await newE2EPage({ url: '/'});
+
     const element = await page.find('app-root');
     expect(element).toHaveClass('hydrated');
   });
+
+  it ('hides navbar on construction page', async () => {
+    const page = await newE2EPage({ url: '/'});
+
+    const navbar = await page.find('app-root >>> app-navbar');
+    expect(navbar).toHaveClass('hidden');
+  })
 });
