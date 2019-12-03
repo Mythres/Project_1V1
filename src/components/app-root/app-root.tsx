@@ -1,4 +1,4 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, State } from '@stencil/core';
 
 @Component({
   tag: 'app-root',
@@ -6,12 +6,22 @@ import { Component, h } from '@stencil/core';
   shadow: true
 })
 export class AppRoot {
+  @State() isConstruction: boolean;
+
+  componentWillLoad() {
+    if (window.location.pathname === '/') {
+      this.isConstruction = true;
+    } else {
+      this.isConstruction = false;
+    }
+  }
+
   render() {
     return (
       <div>
         <main>
           <div id="root">
-            <app-navbar></app-navbar>
+            <app-navbar class={this.isConstruction ? 'hidden' : ''}></app-navbar>
             <div id="pageContent">
               <stencil-router>
                 <stencil-route-switch scrollTopOffset={0}>
