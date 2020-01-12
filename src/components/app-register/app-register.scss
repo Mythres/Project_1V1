@@ -1,0 +1,13 @@
+@import "node_modules/@blaze/css/src/scss/blaze";
+
+:host {
+  --spacing-medium: 1.1em;
+}
+
+button {
+  cursor: pointer;
+}
+
+.o-modal[role=dialog] {
+  width: 25em !important;
+}

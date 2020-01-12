@@ -1,19 +1,34 @@
-import { Component, h, State } from '@stencil/core';
+import {Component, h, Listen, State} from '@stencil/core';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.css',
+  styleUrl: 'app-root.scss',
   shadow: true
 })
 export class AppRoot {
   @State() isConstruction: boolean;
 
+  appLoginRef!: HTMLAppLoginElement;
+  appRegisterRef!: HTMLAppRegisterElement;
+
   componentWillLoad() {
-    if (window.location.pathname === '/') {
-      this.isConstruction = true;
-    } else {
-      this.isConstruction = false;
+    this.isConstruction = window.location.pathname === '/';
+  }
+
+  async componentDidLoad() {
+    if (window.location.pathname.endsWith('/login')) {
+      await this.appLoginRef.showDialog();
     }
+  }
+
+  @Listen('loginClickedEvent')
+  async loginClickedHandler() {
+    await this.appLoginRef.showDialog();
+  }
+
+  @Listen('registerClickedEvent')
+  async registerClickedHandler() {
+    await this.appRegisterRef.showDialog();
   }
 
   render() {
@@ -21,7 +36,9 @@ export class AppRoot {
       <div>
         <main>
           <div id="root">
-            <app-navbar class={this.isConstruction ? 'hidden' : ''}></app-navbar>
+            <app-navbar class={this.isConstruction ? 'hidden' : ''} />
+            <app-login ref={(el) => this.appLoginRef = el as HTMLAppLoginElement} />
+            <app-register ref={(el) => this.appRegisterRef = el as HTMLAppRegisterElement} />
             <div id="pageContent">
               <stencil-router>
                 <stencil-route-switch scrollTopOffset={0}>

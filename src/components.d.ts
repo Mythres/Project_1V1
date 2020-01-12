@@ -14,8 +14,14 @@ export namespace Components {
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
+  interface AppLogin {
+    'showDialog': () => Promise<void>;
+  }
   interface AppNavbar {}
   interface AppNews {}
+  interface AppRegister {
+    'showDialog': () => Promise<void>;
+  }
   interface AppRoot {}
 }
 
@@ -46,6 +52,12 @@ declare global {
     new (): HTMLAppInfoElement;
   };
 
+  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
+  var HTMLAppLoginElement: {
+    prototype: HTMLAppLoginElement;
+    new (): HTMLAppLoginElement;
+  };
+
   interface HTMLAppNavbarElement extends Components.AppNavbar, HTMLStencilElement {}
   var HTMLAppNavbarElement: {
     prototype: HTMLAppNavbarElement;
@@ -58,6 +70,12 @@ declare global {
     new (): HTMLAppNewsElement;
   };
 
+  interface HTMLAppRegisterElement extends Components.AppRegister, HTMLStencilElement {}
+  var HTMLAppRegisterElement: {
+    prototype: HTMLAppRegisterElement;
+    new (): HTMLAppRegisterElement;
+  };
+
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
@@ -68,8 +86,10 @@ declare global {
     'app-game': HTMLAppGameElement;
     'app-home': HTMLAppHomeElement;
     'app-info': HTMLAppInfoElement;
+    'app-login': HTMLAppLoginElement;
     'app-navbar': HTMLAppNavbarElement;
     'app-news': HTMLAppNewsElement;
+    'app-register': HTMLAppRegisterElement;
     'app-root': HTMLAppRootElement;
   }
 }
@@ -79,8 +99,13 @@ declare namespace LocalJSX {
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
-  interface AppNavbar {}
+  interface AppLogin {}
+  interface AppNavbar {
+    'onLoginClickedEvent'?: (event: CustomEvent<any>) => void;
+    'onRegisterClickedEvent'?: (event: CustomEvent<any>) => void;
+  }
   interface AppNews {}
+  interface AppRegister {}
   interface AppRoot {}
 
   interface IntrinsicElements {
@@ -88,8 +113,10 @@ declare namespace LocalJSX {
     'app-game': AppGame;
     'app-home': AppHome;
     'app-info': AppInfo;
+    'app-login': AppLogin;
     'app-navbar': AppNavbar;
     'app-news': AppNews;
+    'app-register': AppRegister;
     'app-root': AppRoot;
   }
 }
@@ -104,8 +131,10 @@ declare module "@stencil/core" {
       'app-game': LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-info': LocalJSX.AppInfo & JSXBase.HTMLAttributes<HTMLAppInfoElement>;
+      'app-login': LocalJSX.AppLogin & JSXBase.HTMLAttributes<HTMLAppLoginElement>;
       'app-navbar': LocalJSX.AppNavbar & JSXBase.HTMLAttributes<HTMLAppNavbarElement>;
       'app-news': LocalJSX.AppNews & JSXBase.HTMLAttributes<HTMLAppNewsElement>;
+      'app-register': LocalJSX.AppRegister & JSXBase.HTMLAttributes<HTMLAppRegisterElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
     }
   }

@@ -2,7 +2,7 @@ import { Component, h } from '@stencil/core';
 
 @Component({
   tag: 'app-news',
-  styleUrl: 'app-news.css',
+  styleUrl: 'app-news.scss',
   shadow: true
 })
 export class AppNews {

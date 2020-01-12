@@ -43,3 +43,19 @@ li {
 li:hover {
   background-color: #43545c
 }
+
+.flexRight {
+  margin-left: auto;
+}
+
+.flexLeft {
+  margin-right: auto;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.authControl {
+  cursor: pointer;
+}
