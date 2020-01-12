@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "api/test.js": {
+      "memory": 128
+    }
+  },
+  "regions": ["cdg1"],
+  "trailingSlash": false
+}
