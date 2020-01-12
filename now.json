@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/test.js": {
+      "memory": 128
+    }
+  }
+}
