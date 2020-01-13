@@ -1,15 +1,25 @@
 @import "node_modules/@blaze/css/src/scss/blaze";
 
-:host {
-  --spacing-medium: 1.1em;
-}
-
 button {
   cursor: pointer;
 }
 
 .o-modal[role=dialog] {
   width: 25em !important;
+}
+
+.c-field {
+  box-sizing: border-box;
+}
+
+.c-alert {
+  width:  100%;
+  box-sizing: border-box;
+  margin: var(--spacing-medium) 0 0 !important;
+}
+
+.c-button {
+  box-sizing: border-box;
 }
 
 #forgotPasswordBtn {

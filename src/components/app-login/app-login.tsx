@@ -27,7 +27,7 @@ export class AppLogin {
             <div class="o-form-element">
               <label class="c-label">
                 Username:
-                <input class="c-field c-field--label" type="text" placeholder="Please enter your username.."/>
+                <input class="c-field c-field--label" type="text" placeholder="TheLegend27"/>
                 <div role="tooltip" class="c-hint">
                   The username for your account
                 </div>
