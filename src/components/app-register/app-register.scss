@@ -11,3 +11,8 @@ button {
 .o-modal[role=dialog] {
   width: 25em !important;
 }
+
+.c-alert {
+  width: 83%;
+  margin: var(--spacing-medium) 0 0 !important;
+}

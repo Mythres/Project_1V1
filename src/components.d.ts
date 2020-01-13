@@ -7,9 +7,18 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  AuthCredentials,
+  LoginResult,
+} from './components/app-auth/app-auth';
 
 export namespace Components {
+  interface AppAuth {
+    'getCredentials': () => Promise<AuthCredentials>;
+    'isLoggedIn': () => Promise<boolean>;
+    'logIn': (_username: string, _password: string) => Promise<LoginResult>;
+    'logOut': () => Promise<void>;
+  }
   interface AppConstruction {}
   interface AppGame {}
   interface AppHome {}
@@ -17,8 +26,15 @@ export namespace Components {
   interface AppLogin {
     'showDialog': () => Promise<void>;
   }
-  interface AppNavbar {}
+  interface AppNavbar {
+    'isAuthenticated': boolean;
+    'username': string;
+  }
   interface AppNews {}
+  interface AppProfile {
+    'email': string;
+    'username': string;
+  }
   interface AppRegister {
     'showDialog': () => Promise<void>;
   }
@@ -27,6 +43,12 @@ export namespace Components {
 
 declare global {
 
+
+  interface HTMLAppAuthElement extends Components.AppAuth, HTMLStencilElement {}
+  var HTMLAppAuthElement: {
+    prototype: HTMLAppAuthElement;
+    new (): HTMLAppAuthElement;
+  };
 
   interface HTMLAppConstructionElement extends Components.AppConstruction, HTMLStencilElement {}
   var HTMLAppConstructionElement: {
@@ -70,6 +92,12 @@ declare global {
     new (): HTMLAppNewsElement;
   };
 
+  interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
+  var HTMLAppProfileElement: {
+    prototype: HTMLAppProfileElement;
+    new (): HTMLAppProfileElement;
+  };
+
   interface HTMLAppRegisterElement extends Components.AppRegister, HTMLStencilElement {}
   var HTMLAppRegisterElement: {
     prototype: HTMLAppRegisterElement;
@@ -82,6 +110,7 @@ declare global {
     new (): HTMLAppRootElement;
   };
   interface HTMLElementTagNameMap {
+    'app-auth': HTMLAppAuthElement;
     'app-construction': HTMLAppConstructionElement;
     'app-game': HTMLAppGameElement;
     'app-home': HTMLAppHomeElement;
@@ -89,26 +118,37 @@ declare global {
     'app-login': HTMLAppLoginElement;
     'app-navbar': HTMLAppNavbarElement;
     'app-news': HTMLAppNewsElement;
+    'app-profile': HTMLAppProfileElement;
     'app-register': HTMLAppRegisterElement;
     'app-root': HTMLAppRootElement;
   }
 }
 
 declare namespace LocalJSX {
+  interface AppAuth {}
   interface AppConstruction {}
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
   interface AppLogin {}
   interface AppNavbar {
-    'onLoginClickedEvent'?: (event: CustomEvent<any>) => void;
-    'onRegisterClickedEvent'?: (event: CustomEvent<any>) => void;
+    'isAuthenticated'?: boolean;
+    'onLoginModalOpenEvent'?: (event: CustomEvent<any>) => void;
+    'onRegisterModalOpenEvent'?: (event: CustomEvent<any>) => void;
+    'username'?: string;
   }
   interface AppNews {}
-  interface AppRegister {}
+  interface AppProfile {
+    'email'?: string;
+    'username'?: string;
+  }
+  interface AppRegister {
+    'onRegisterBtnClicked'?: (event: CustomEvent<any>) => void;
+  }
   interface AppRoot {}
 
   interface IntrinsicElements {
+    'app-auth': AppAuth;
     'app-construction': AppConstruction;
     'app-game': AppGame;
     'app-home': AppHome;
@@ -116,6 +156,7 @@ declare namespace LocalJSX {
     'app-login': AppLogin;
     'app-navbar': AppNavbar;
     'app-news': AppNews;
+    'app-profile': AppProfile;
     'app-register': AppRegister;
     'app-root': AppRoot;
   }
@@ -127,6 +168,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
+      'app-auth': LocalJSX.AppAuth & JSXBase.HTMLAttributes<HTMLAppAuthElement>;
       'app-construction': LocalJSX.AppConstruction & JSXBase.HTMLAttributes<HTMLAppConstructionElement>;
       'app-game': LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
@@ -134,6 +176,7 @@ declare module "@stencil/core" {
       'app-login': LocalJSX.AppLogin & JSXBase.HTMLAttributes<HTMLAppLoginElement>;
       'app-navbar': LocalJSX.AppNavbar & JSXBase.HTMLAttributes<HTMLAppNavbarElement>;
       'app-news': LocalJSX.AppNews & JSXBase.HTMLAttributes<HTMLAppNewsElement>;
+      'app-profile': LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
       'app-register': LocalJSX.AppRegister & JSXBase.HTMLAttributes<HTMLAppRegisterElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
     }
