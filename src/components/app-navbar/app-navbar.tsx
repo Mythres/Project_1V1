@@ -1,4 +1,4 @@
-import {Component, h, State, Event, EventEmitter, Prop} from '@stencil/core';
+import {Component, h, Event, EventEmitter, Prop} from '@stencil/core';
 
 @Component({
   tag: 'app-navbar',
