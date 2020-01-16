@@ -6,6 +6,7 @@ import {waitForMilliseconds} from "../../utils/WaitForMilliseconds";
 import {RegisterInformation} from "../app-register/interfaces/RegisterInformation";
 import {LoginInformation} from "../app-login/interfaces/LoginInformation";
 import {ForgotPasswordInformation} from "../app-login/interfaces/ForgotPasswordInformation";
+import {UpdateAccountInformation} from "../app-profile/interfaces/UpdateAccountInformation";
 
 @Component({
   tag: 'app-root',
@@ -21,8 +22,9 @@ export class AppRoot {
   @State() email: string;
 
   appAuthRef!: HTMLAppAuthElement;
-  appLoginRef!: HTMLAppLoginElement;
-  appRegisterRef!: HTMLAppRegisterElement;
+  appLoginRef: HTMLAppLoginElement;
+  appRegisterRef: HTMLAppRegisterElement;
+  appProfileRef: HTMLAppProfileElement;
 
   componentWillLoad() {
     this.isConstruction = window.location.pathname === '/';
@@ -120,6 +122,19 @@ export class AppRoot {
     }
   }
 
+  @Listen('updateAccountBtnClicked')
+  async updateAccountBtnClickedHandler(event: CustomEvent) {
+    const info: UpdateAccountInformation = event.detail;
+    const result = await this.appAuthRef.updateAccount(info.email, info.username, info.password);
+
+    if (result.success) {
+      await this.appProfileRef.showMessage(AlertType.Success, "Account details updated successfully");
+      return;
+    } else {
+      await this.appProfileRef.showMessage(AlertType.Error, result.errorMsg);
+    }
+  }
+
   render() {
     return (
       <main>
@@ -144,7 +159,8 @@ export class AppRoot {
                   redirectUrl="/dev/login"
                   exact={true}
                   component='app-profile'
-                  componentProps={{'username': this.username, 'email': this.email}}
+                  componentProps={{'username': this.username, 'email': this.email,
+                    'ref':(el) => this.appProfileRef = el as HTMLAppProfileElement}}
                 />
               </stencil-route-switch>
             </stencil-router>

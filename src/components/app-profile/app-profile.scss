@@ -1,13 +1,21 @@
 @import "node_modules/@blaze/css/src/scss/blaze";
 
-@media (min-width: 20em) {
-  .o-grid {
-    margin-top: 1em;
-  }
+.o-grid {
+  height: calc(80vh);
 }
 
-@media (min-width: 116em) {
-  .o-grid {
-    margin-top: 3em;
-  }
+.c-alert {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  margin: var(--spacing-medium) 0 0 !important;
+}
+
+.c-field {
+  box-sizing: border-box;
+}
+
+.c-button {
+  box-sizing: border-box;
+  cursor: pointer;
 }

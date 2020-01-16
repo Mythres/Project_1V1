@@ -74,7 +74,7 @@ export class AppRegister {
   }
 
   async validateFormInput(): Promise<boolean> {
-    await this.errorAlertRef.close();
+    await this.closeMessages();
 
     if (!this.username) {
       await this.showMessage(AlertType.Error, "Please enter a username");

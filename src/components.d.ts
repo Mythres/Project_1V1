@@ -34,6 +34,7 @@ export namespace Components {
     'logIn': (_username: string, _password: string) => Promise<LoginResult>;
     'logOut': () => Promise<void>;
     'register': (_username: string, _email: string, _password: string) => Promise<RegisterResult>;
+    'updateAccount': (_email: string, _username: string, _password: string) => Promise<{ success: boolean; errorMsg: string; }>;
   }
   interface AppConstruction {}
   interface AppGame {}
@@ -52,7 +53,14 @@ export namespace Components {
     'username': string;
   }
   interface AppNews {}
-  interface AppProfile {}
+  interface AppProfile {
+    'clearForm': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
+    'email': string;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
+    'username': string;
+  }
   interface AppRegister {
     'clearForm': () => Promise<void>;
     'closeDialog': () => Promise<void>;
@@ -167,7 +175,11 @@ declare namespace LocalJSX {
     'username'?: string;
   }
   interface AppNews {}
-  interface AppProfile {}
+  interface AppProfile {
+    'email'?: string;
+    'onUpdateAccountBtnClicked'?: (event: CustomEvent<any>) => void;
+    'username'?: string;
+  }
   interface AppRegister {
     'history'?: RouterHistory;
     'onRegisterBtnClicked'?: (event: CustomEvent<any>) => void;

@@ -65,6 +65,12 @@ li:hover {
   margin-right: auto;
 }
 
+.flexLeft\@large {
+  @media (max-width: 64em) {
+    margin-right: auto;
+  }
+}
+
 .hidden {
   visibility: hidden;
 }
@@ -75,4 +81,10 @@ li:hover {
 
 .noBorderRight {
   border-right: 0;
+}
+
+#placeholder {
+  @media (max-width: 64em) {
+    display: none;
+  }
 }

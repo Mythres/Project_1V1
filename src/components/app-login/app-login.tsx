@@ -76,7 +76,7 @@ export class AppLogin {
   }
 
   async validateFormInput(): Promise<boolean> {
-    await this.errorAlertRef.close();
+    await this.closeMessages();
 
     if (this.forgotPassword) {
       if (!this.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {

@@ -52,6 +52,14 @@ export class AppAuth {
   }
 
   @Method()
+  async updateAccount(_email: string, _username:string, _password:string) {
+    return {
+      success: false,
+      errorMsg: 'No'
+    }
+  }
+
+  @Method()
   async logOut() {
 
   }
