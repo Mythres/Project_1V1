@@ -1,3 +1,5 @@
+@import "node_modules/@blaze/css/src/scss/blaze";
+
 a {
   display: block;
   height: calc(5em - 1px);
@@ -15,15 +17,13 @@ nav {
 }
 
 ul {
-  height: calc(100% - 2px);
+  height: 100%;
   margin-top: 0;
   padding: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   list-style-type: none;
-  border-top: 1px solid #4e6069;
-  border-bottom: 1px solid #4e6069;
 }
 
 li:last-child {
@@ -44,6 +44,19 @@ li:hover {
   background-color: #43545c
 }
 
+.o-grid {
+  height: 100%;
+}
+
+.o-grid__cell {
+  padding: 0;
+  border-bottom: 1px solid #4e6069;
+}
+
+.grid__cell {
+  padding: 0;
+}
+
 .flexRight {
   margin-left: auto;
 }
@@ -56,7 +69,7 @@ li:hover {
   visibility: hidden;
 }
 
-.authControl {
+.pointer {
   cursor: pointer;
 }
 
