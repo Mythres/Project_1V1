@@ -12,6 +12,16 @@ button {
   width: 25em !important;
 }
 
+.c-alert {
+  width: 83%;
+  text-align: center;
+  margin: var(--spacing-medium) 0 0 !important;
+}
+
+.c-card__footer {
+  padding-right: 0;
+}
+
 #forgotPasswordBtn {
   cursor: pointer;
   text-decoration-line: underline;
