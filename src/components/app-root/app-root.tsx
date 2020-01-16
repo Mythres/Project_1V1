@@ -97,12 +97,11 @@ export class AppRoot {
 
     if (result.success) {
       await this.appLoginRef.showMessage(AlertType.Success, 'Logged in successfully');
+      await waitForMilliseconds(500);
 
       this.username = result.credentials.username;
       this.email = result.credentials.email;
       this.isAuthenticated = true;
-
-      await waitForMilliseconds(500);
       return;
     }
 

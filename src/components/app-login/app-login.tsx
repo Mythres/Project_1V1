@@ -175,9 +175,9 @@ export class AppLogin {
                     <input onInput={(event: UIEvent) => {
                       this.onUsernameInputChanged(event)
                     }} class="c-field c-field--label"
-                           type="text" value={this.username} placeholder="Please enter your username.."/>
+                           type="text" value={this.username}/>
                     <div role="tooltip" class="c-hint">
-                      The username for your account
+                      Your username
                     </div>
                   </label>
                 </div>

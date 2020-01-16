@@ -136,9 +136,9 @@ export class AppProfile {
                 <label class="c-label">
                   Username:
                   <input onInput={(event: UIEvent) => this.onUsernameInputChanged(event)} class="c-field c-field--label"
-                         type="text" value={this.newUsername} placeholder="Please enter your username.."/>
+                         type="text" value={this.newUsername}/>
                   <div role="tooltip" class="c-hint">
-                    The username for your account
+                    The new username for your account
                   </div>
                 </label>
               </div>

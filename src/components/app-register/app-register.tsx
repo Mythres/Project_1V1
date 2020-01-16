@@ -149,9 +149,9 @@ export class AppRegister {
               <label class="c-label">
                 Username:
                 <input onInput={(event: UIEvent) => this.onUsernameInputChanged(event)} class="c-field c-field--label"
-                       type="text" value={this.username} placeholder="Please enter your username.."/>
+                       type="text" value={this.username}/>
                 <div role="tooltip" class="c-hint">
-                  The username for your account
+                  A username for your account
                 </div>
               </label>
             </div>
