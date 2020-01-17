@@ -1,4 +1,7 @@
-import {Component, Event, EventEmitter, h, Method, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Method, Prop, State} from '@stencil/core';
+import {AlertType} from "../../utils/AlertType";
+import {RegisterInformation} from "./interfaces/RegisterInformation";
+import {RouterHistory} from "@stencil/router";
 
 @Component({
   tag: 'app-register',
@@ -6,6 +9,12 @@ import {Component, Event, EventEmitter, h, Method, State} from '@stencil/core';
   shadow: true
 })
 export class AppRegister {
+  @Prop() history: RouterHistory;
+
+  @State() email: string;
+  @State() username: string;
+  @State() password: string;
+  @State() confirmPassword: string;
 
   @State() errorToastMsg = '';
   @State() successToastMsg = '';
@@ -16,11 +25,6 @@ export class AppRegister {
   errorAlertRef!: HTMLBlazeAlertElement;
   successAlertRef!: HTMLBlazeAlertElement;
 
-  email: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-
   @Method()
   async showDialog() {
     if (!(await this.modalRef.isOpen())) {
@@ -28,32 +32,68 @@ export class AppRegister {
     }
   }
 
-  async validateFormInput(): Promise<boolean> {
+  @Method()
+  async closeDialog() {
+    if ((await this.modalRef.isOpen())) {
+      await this.modalRef.close();
+    }
+  }
+
+  @Method()
+  async clearForm() {
+    this.username = '';
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+  }
+
+  @Method()
+  async showMessage(alertType: AlertType, text: string) {
+    if (alertType === AlertType.Error) {
+      this.errorToastMsg = text;
+      await this.errorAlertRef.show();
+    } else {
+      this.successToastMsg = text;
+      await this.successAlertRef.show();
+    }
+  }
+
+  @Method()
+  async closeMessage(alertType: AlertType) {
+    if (alertType === AlertType.Error) {
+      await this.errorAlertRef.close();
+    } else {
+      await this.successAlertRef.close();
+    }
+  }
+
+  @Method()
+  async closeMessages() {
     await this.errorAlertRef.close();
+    await this.successAlertRef.close();
+  }
+
+  async validateFormInput(): Promise<boolean> {
+    await this.closeMessages();
 
     if (!this.username) {
-      this.errorToastMsg = "Please enter a username";
-      await this.errorAlertRef.show();
+      await this.showMessage(AlertType.Error, "Please enter a username");
       return false;
     }
-    if (!this.email) {
-      this.errorToastMsg = "Please enter an email address";
-      await this.errorAlertRef.show();
+    if (!this.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+      await this.showMessage(AlertType.Error, "Please enter a valid email address");
       return false;
     }
     if (!this.password) {
-      this.errorToastMsg = "Please enter a password";
-      await this.errorAlertRef.show();
+      await this.showMessage(AlertType.Error, "Please enter a password");
       return false;
     }
     if (!this.confirmPassword) {
-      this.errorToastMsg = "Please confirm your password by entering it again";
-      await this.errorAlertRef.show();
+      await this.showMessage(AlertType.Error, "Please confirm your password by entering it again");
       return false;
     }
     if (this.password !== this.confirmPassword) {
-      this.errorToastMsg = "The passwords don't match";
-      await this.errorAlertRef.show();
+      await this.showMessage(AlertType.Error, "The passwords don't match");
       return false;
     }
 
@@ -76,23 +116,24 @@ export class AppRegister {
     this.confirmPassword = event.target.value;
   }
 
-  onRegisterButtonClicked(event) {
+  async onRegisterButtonClicked(event) {
     event.preventDefault();
 
-    if(!this.validateFormInput()) {
-      return
+    if(!(await this.validateFormInput())) {
+      return;
     }
 
-    this.registerBtnClicked.emit({
+    const info: RegisterInformation = {
       email: this.email,
       username: this.username,
       password: this.password
-    });
+    };
+
+    this.registerBtnClicked.emit(info);
   }
 
   render() {
     return (
-
       <blaze-modal open={false} dismissible={true} ref={(el) => this.modalRef = el as HTMLBlazeModalElement}>
         <form class="o-container o-container--xsmall c-card u-high">
           <blaze-card-header>
@@ -107,18 +148,18 @@ export class AppRegister {
             <div class="o-form-element">
               <label class="c-label">
                 Username:
-                <input onInput={(event: UIEvent) => this.onUsernameInputChanged(event)}
-                       class="c-field c-field--label" type="text" placeholder="TheLegend27"/>
+                <input onInput={(event: UIEvent) => this.onUsernameInputChanged(event)} class="c-field c-field--label"
+                       type="text" value={this.username}/>
                 <div role="tooltip" class="c-hint">
-                  The username for your account
+                  A username for your account
                 </div>
               </label>
             </div>
             <div class="o-form-element">
               <label class="c-label">
                 Email Address:
-                <input onInput={(event: UIEvent) => this.onEmailInputChanged(event)}
-                       class="c-field c-field--label" type="email" placeholder="user@example.com"/>
+                <input onInput={(event: UIEvent) => this.onEmailInputChanged(event)} class="c-field c-field--label"
+                       type="email" value={this.email} placeholder="user@example.com"/>
                 <div role="tooltip" class="c-hint">
                   Your email address
                 </div>
@@ -126,13 +167,13 @@ export class AppRegister {
             </div>
             <label class="o-form-element c-label">
               Password:
-              <input onInput={(event: UIEvent) => this.onPasswordInputChanged(event)}
-                     class="c-field c-field--label" type="password" />
+              <input onInput={(event: UIEvent) => this.onPasswordInputChanged(event)} class="c-field c-field--label"
+                     type="password" value={this.password} />
             </label>
             <label class="o-form-element c-label">
               Confirm Password:
-              <input onInput={(event: UIEvent) => this.onConfirmPasswordInputChanged(event)}
-                     class="c-field c-field--label" type="password" />
+              <input onInput={(event: UIEvent) => this.onConfirmPasswordInputChanged(event)} class="c-field c-field--label"
+                     type="password" value={this.confirmPassword} />
             </label>
           </blaze-card-body>
           <blaze-card-footer>

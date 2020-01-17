@@ -8,23 +8,45 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  AuthCredentials,
+  RegisterResult,
+} from './components/app-auth/interfaces/RegisterResult';
+import {
   LoginResult,
-} from './components/app-auth/app-auth';
+} from './components/app-auth/interfaces/LoginResult';
+import {
+  ForgotPasswordResult,
+} from './components/app-auth/interfaces/ForgotPasswordResult';
+import {
+  AuthCredentials,
+} from './components/app-auth/interfaces/AuthCredentials';
+import {
+  AlertType,
+} from './utils/AlertType';
+import {
+  RouterHistory,
+} from '@stencil/router';
 
 export namespace Components {
   interface AppAuth {
+    'forgotPassword': (_email: string) => Promise<ForgotPasswordResult>;
     'getCredentials': () => Promise<AuthCredentials>;
     'isLoggedIn': () => Promise<boolean>;
     'logIn': (_username: string, _password: string) => Promise<LoginResult>;
     'logOut': () => Promise<void>;
+    'register': (_username: string, _email: string, _password: string) => Promise<RegisterResult>;
+    'updateAccount': (_email: string, _username: string, _password: string) => Promise<{ success: boolean; errorMsg: string; }>;
   }
   interface AppConstruction {}
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
   interface AppLogin {
+    'clearForm': () => Promise<void>;
+    'closeDialog': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
     'showDialog': () => Promise<void>;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
   }
   interface AppNavbar {
     'isAuthenticated': boolean;
@@ -32,13 +54,25 @@ export namespace Components {
   }
   interface AppNews {}
   interface AppProfile {
+    'clearForm': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
     'email': string;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
     'username': string;
   }
   interface AppRegister {
+    'clearForm': () => Promise<void>;
+    'closeDialog': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
+    'history': RouterHistory;
     'showDialog': () => Promise<void>;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
   }
-  interface AppRoot {}
+  interface AppRoot {
+    'history': RouterHistory;
+  }
 }
 
 declare global {
@@ -130,7 +164,10 @@ declare namespace LocalJSX {
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
-  interface AppLogin {}
+  interface AppLogin {
+    'onForgotPasswordBtnClicked'?: (event: CustomEvent<any>) => void;
+    'onLoginBtnClicked'?: (event: CustomEvent<any>) => void;
+  }
   interface AppNavbar {
     'isAuthenticated'?: boolean;
     'onLoginModalOpenEvent'?: (event: CustomEvent<any>) => void;
@@ -140,12 +177,16 @@ declare namespace LocalJSX {
   interface AppNews {}
   interface AppProfile {
     'email'?: string;
+    'onUpdateAccountBtnClicked'?: (event: CustomEvent<any>) => void;
     'username'?: string;
   }
   interface AppRegister {
+    'history'?: RouterHistory;
     'onRegisterBtnClicked'?: (event: CustomEvent<any>) => void;
   }
-  interface AppRoot {}
+  interface AppRoot {
+    'history'?: RouterHistory;
+  }
 
   interface IntrinsicElements {
     'app-auth': AppAuth;

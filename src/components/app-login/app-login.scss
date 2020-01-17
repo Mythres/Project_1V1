@@ -8,14 +8,19 @@ button {
   width: 25em !important;
 }
 
-.c-field {
+.c-alert {
+  width: 100%;
   box-sizing: border-box;
+  text-align: center;
+  margin: var(--spacing-medium) 0 0 !important;
 }
 
-.c-alert {
-  width:  100%;
+.c-card__footer {
+  padding-right: 0;
+}
+
+.c-field {
   box-sizing: border-box;
-  margin: var(--spacing-medium) 0 0 !important;
 }
 
 .c-button {

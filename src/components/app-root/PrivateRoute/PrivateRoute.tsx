@@ -1,4 +1,4 @@
-import {Component, FunctionalComponent, h} from '@stencil/core';
+import {FunctionalComponent, h} from '@stencil/core';
 
 interface PrivateRouteProps {
   isAuthenticated: boolean;
@@ -9,11 +9,12 @@ interface PrivateRouteProps {
   componentProps?: {[key: string]: any};
 }
 
-export const PrivateRoute: FunctionalComponent<PrivateRouteProps> = ({isAuthenticated, redirectUrl, ...props}) => (
+export const PrivateRoute: FunctionalComponent<PrivateRouteProps> =
+  ({isAuthenticated, redirectUrl, component, ...props}) => (
   <stencil-route {...props} routeRender={
     (props) => {
-      // Component is undefined when the parent component is still loading.
-      if (isAuthenticated && typeof Component !== 'undefined') {
+      const Component = component;
+      if (isAuthenticated) {
         return <Component {...props} {...props.componentProps} />;
       }
       return <stencil-router-redirect url={redirectUrl} />;

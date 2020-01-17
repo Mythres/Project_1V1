@@ -1,3 +1,21 @@
-:host {
-  display: block;
+@import "node_modules/@blaze/css/src/scss/blaze";
+
+.o-grid {
+  height: calc(80vh);
+}
+
+.c-alert {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  margin: var(--spacing-medium) 0 0 !important;
+}
+
+.c-field {
+  box-sizing: border-box;
+}
+
+.c-button {
+  box-sizing: border-box;
+  cursor: pointer;
 }

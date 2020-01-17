@@ -1,14 +1,8 @@
 import {Host, h, Method, Component} from '@stencil/core';
-
-export interface LoginResult {
-  success: boolean;
-  credentials: AuthCredentials;
-}
-
-export interface AuthCredentials {
-  username: string;
-  email: string;
-}
+import {AuthCredentials} from "./interfaces/AuthCredentials";
+import {LoginResult} from "./interfaces/LoginResult";
+import {RegisterResult} from "./interfaces/RegisterResult";
+import {ForgotPasswordResult} from "./interfaces/ForgotPasswordResult";
 
 @Component({
   tag: 'app-auth',
@@ -21,13 +15,17 @@ export class AppAuth {
   username: string;
   email: string;
 
-  componentWillLoad() {
-
-  }
-
   @Method()
   async isLoggedIn() {
     return !!this.token;
+  }
+
+  @Method()
+  async register(_username: string, _email: string, _password: string): Promise<RegisterResult> {
+    return {
+      success: true,
+      errorMsg: 'Username already exists'
+    }
   }
 
   @Method()
@@ -36,11 +34,28 @@ export class AppAuth {
     this.email = 'user@example.com';
 
     return {
-      success: false,
+      success: true,
+      errorMsg: 'Incorrect Password',
       credentials: {
         username: this.username,
         email: this.email
       },
+    }
+  }
+
+  @Method()
+  async forgotPassword(_email: string): Promise<ForgotPasswordResult> {
+    return {
+      success: true,
+      errorMsg: ''
+    }
+  }
+
+  @Method()
+  async updateAccount(_email: string, _username:string, _password:string) {
+    return {
+      success: false,
+      errorMsg: 'No'
     }
   }
 

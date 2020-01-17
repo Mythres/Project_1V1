@@ -26,14 +26,14 @@ export class AppNavbar {
     return (
       <div>
         <nav>
-          <div class="o-grid o-grid--demo">
-            <div class="o-grid__cell o-grid__cell--width-25"></div>
-            <div class="o-grid__cell o-grid__cell--width50">
+          <div class="o-grid">
+            <div id="placeholder" class="o-grid__cell o-grid__cell--width-25"/>
+            <div class="o-grid__cell o-grid__cell--width-75 o-grid__cell--width-50@large">
               <ul>
                 <li><stencil-route-link url="/dev" exact={true}>Project 1v1</stencil-route-link></li>
                 <li><stencil-route-link url="/gameinfo" exact={true}>Game Info</stencil-route-link></li>
                 <li><stencil-route-link url="/news" exact={true}>News</stencil-route-link></li>
-                <li><stencil-route-link url="/game" exact={true}>Play Now</stencil-route-link></li>
+                <li class="flexLeft@large"><stencil-route-link url="/game" exact={true}>Play Now</stencil-route-link></li>
               </ul>
             </div>
             <div class="o-grid__cell o-grid__cell--width-25">
