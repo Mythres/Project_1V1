@@ -4,6 +4,11 @@ button {
   cursor: pointer;
 }
 
+input {
+  font-family: 'Glegoo', serif !important;
+  font-weight: bolder !important;
+}
+
 .o-modal[role=dialog] {
   width: 25em !important;
 }

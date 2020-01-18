@@ -4,6 +4,7 @@ import (
   "encoding/json"
   jwt "github.com/dgrijalva/jwt-go"
   f "github.com/fauna/faunadb-go/faunadb"
+  "golang.org/x/crypto/bcrypt"
   "net/http"
   "os"
   "regexp"
@@ -14,7 +15,7 @@ import (
 type updateInformation struct {
   Username *string `json:"username" fauna:"username"`
   Email *string `json:"email" fauna:"email"`
-  PasswordHash *string `json:"passwordHash" fauna:"password"`
+  Password *string `json:"password" fauna:"password"`
 }
 
 type jwtClaims struct {
@@ -57,7 +58,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
     return
   }
 
-  if data.Username == nil || data.Email == nil || data.PasswordHash == nil {
+  if data.Username == nil || data.Email == nil || data.Password == nil {
     http.Error(rw, "JSON object is incomplete", http.StatusBadRequest)
     return
   }
@@ -253,8 +254,11 @@ func getUpdatedValues(claims *jwtClaims, data *updateInformation) f.Obj {
   if claims.Email != *data.Email {
     updatedValues["data"].(f.Obj)["email"] = *data.Email
   }
-  if len(*data.PasswordHash) > 0 {
-    updatedValues["data"].(f.Obj)["password"] = *data.PasswordHash
+  if len(*data.Password) > 0 {
+    hash, _ := bcrypt.GenerateFromPassword([]byte(*data.Password), bcrypt.MinCost)
+
+    hashString := string(hash)
+    updatedValues["data"].(f.Obj)["password"] = hashString
   }
 
   return updatedValues

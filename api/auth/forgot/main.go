@@ -5,6 +5,7 @@ import (
   "encoding/binary"
   "encoding/json"
   f "github.com/fauna/faunadb-go/faunadb"
+  "golang.org/x/crypto/bcrypt"
   "math/rand"
   "net/http"
   "net/smtp"
@@ -71,6 +72,13 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
 
   password := generatePassword(8)
 
+  hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+  if handleError(&rw, err, http.StatusInternalServerError) {
+    return
+  }
+
+  hashString := string(hash)
+
   queryRes, err := client.Query(
     f.Update(
       f.Select(
@@ -84,7 +92,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
       ),
       f.Obj{
         "data": f.Obj {
-          "password": password,
+          "password": hashString,
         },
       },
     ),
@@ -101,7 +109,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
     return
   }
 
-  err = sendEmail(user.Email, user.Password)
+  err = sendEmail(user.Email, password)
 
   if handleError(&rw, err, http.StatusInternalServerError) {
     return

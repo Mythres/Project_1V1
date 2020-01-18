@@ -4,6 +4,7 @@ import (
   "encoding/json"
   jwt "github.com/dgrijalva/jwt-go"
   f "github.com/fauna/faunadb-go/faunadb"
+  "golang.org/x/crypto/bcrypt"
   "net/http"
   "os"
   "strings"
@@ -12,7 +13,7 @@ import (
 
 type loginInformation struct {
   Username *string `json:"username"`
-  PasswordHash *string `json:"passwordHash"`
+  Password *string `json:"password"`
 }
 
 type user struct {
@@ -35,8 +36,12 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   if handleError(&rw, err, http.StatusBadRequest) {
     return
   }
-  if data.Username == nil || data.PasswordHash == nil {
+  if data.Username == nil || data.Password == nil {
     http.Error(rw, "JSON object is incomplete", http.StatusBadRequest)
+    return
+  }
+
+  if handleError(&rw, err, http.StatusInternalServerError) {
     return
   }
 
@@ -45,8 +50,8 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   res, err := client.Query(
     f.Get(
       f.MatchTerm(
-        f.Index("users_by_username_password"),
-        f.Arr{data.Username, data.PasswordHash},
+        f.Index("users_by_username"),
+        data.Username,
       ),
     ),
   )
@@ -54,7 +59,6 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   var responseToken jwtToken
 
   if err != nil {
-
     responseToken = jwtToken{
       Token: "",
     }
@@ -71,6 +75,21 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   err = res.At(f.ObjKey("data")).Get(&user)
 
   if handleError(&rw, err, http.StatusInternalServerError) {
+    return
+  }
+
+
+  err =  bcrypt.CompareHashAndPassword([]byte(*user.Password), []byte(*data.Password))
+  if err != nil {
+    responseToken = jwtToken{
+      Token: "",
+    }
+
+    e := json.NewEncoder(rw)
+    err := e.Encode(&responseToken)
+
+    _ = handleError(&rw, err, http.StatusBadRequest)
+
     return
   }
 

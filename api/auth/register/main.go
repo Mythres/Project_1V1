@@ -3,6 +3,7 @@ package handler
 import (
   "encoding/json"
   f "github.com/fauna/faunadb-go/faunadb"
+  "golang.org/x/crypto/bcrypt"
   "net/http"
   "os"
   "regexp"
@@ -11,7 +12,7 @@ import (
 type registerInformation struct {
   Username *string `json:"username"`
   Email *string `json:"email"`
-  PasswordHash *string `json:"passwordHash"`
+  Password *string `json:"password"`
 }
 
 type response struct {
@@ -30,7 +31,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
     return
   }
 
-  if data.Username == nil || data.Email == nil || data.PasswordHash == nil {
+  if data.Username == nil || data.Email == nil || data.Password == nil {
     http.Error(rw, "JSON object is incomplete", http.StatusBadRequest)
     return
   }
@@ -60,6 +61,13 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
         reason,
       }
     } else {
+      hash, err := bcrypt.GenerateFromPassword([]byte(*data.Password), bcrypt.MinCost)
+      if handleError(&rw, err, http.StatusInternalServerError) {
+        return
+      }
+
+      hashString := string(hash)
+
       _, err = client.Query(
         f.Create(
           f.Ref("collections/Users"),
@@ -67,7 +75,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
             "data": f.Obj{
               "username": data.Username,
               "email":    data.Email,
-              "password": data.PasswordHash,
+              "password": hashString,
             },
           },
         ),

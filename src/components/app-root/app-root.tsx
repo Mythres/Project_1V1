@@ -48,6 +48,16 @@ export class AppRoot {
     }
   }
 
+  async componentDidUpdate() {
+    if (window.location.pathname.endsWith('/login')) {
+      this.history.replace(window.location.pathname.replace('/login', ''));
+      await this.appLoginRef.showDialog();
+    } else if (window.location.pathname.endsWith('/register')) {
+      this.history.replace(window.location.pathname.replace('/register', ''));
+      await this.appRegisterRef.showDialog();
+    }
+  }
+
   async showLoginDialog() {
     await this.appLoginRef.clearForm();
     await this.appLoginRef.closeMessages();
@@ -102,6 +112,7 @@ export class AppRoot {
       this.username = result.credentials.username;
       this.email = result.credentials.email;
       this.isAuthenticated = true;
+      await this.appLoginRef.closeDialog();
       return;
     }
 
@@ -130,8 +141,31 @@ export class AppRoot {
       this.email = result.credentials.email;
 
       await this.appProfileRef.showMessage(AlertType.Success, "Account details updated successfully");
-    } else {
+    }
+    else if(result.authStatus.isAuhtorized === false) {
+      this.username = "";
+      this.email = "";
+      this.isAuthenticated = false;
+      await this.appAuthRef.logOut();
+
+      if (window.location.pathname.endsWith('/profile')) {
+        this.history.push('/dev')
+      }
+    }
+    else {
       await this.appProfileRef.showMessage(AlertType.Error, result.errorMsg);
+    }
+  }
+
+  @Listen('logoutEvent')
+  async logoutEventHandler() {
+    this.username = "";
+    this.email = "";
+    this.isAuthenticated = false;
+    await this.appAuthRef.logOut();
+
+    if (window.location.pathname.endsWith('/profile')) {
+      this.history.push('/dev')
     }
   }
 
@@ -140,11 +174,8 @@ export class AppRoot {
       <main>
         <div id="root">
           <app-navbar isAuthenticated={this.isAuthenticated} username={this.username} class={this.isConstruction ? 'hidden' : ''} />
-          {this.isAuthenticated
-          ? ''
-          : [<app-login ref={(el) => this.appLoginRef = el as HTMLAppLoginElement} />,
-            <app-register ref={(el) => this.appRegisterRef = el as HTMLAppRegisterElement} />]
-          }
+          <app-login ref={(el) => this.appLoginRef = el as HTMLAppLoginElement} />,
+          <app-register ref={(el) => this.appRegisterRef = el as HTMLAppRegisterElement} />
           <div id="pageContent">
             <stencil-router>
               <stencil-route-switch scrollTopOffset={0}>

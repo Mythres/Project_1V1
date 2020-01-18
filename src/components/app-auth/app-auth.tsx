@@ -28,7 +28,7 @@ export class AppAuth {
   @Method()
   async register(username: string, email: string, password: string): Promise<RegisterResult> {
     const response = await this.makePOSTRequest('/api/auth/register/main',{
-      username: username, email: email, passwordHash: password
+      username: username, email: email, password: password
     }, false);
 
     if (!response.ok) {
@@ -44,7 +44,7 @@ export class AppAuth {
   @Method()
   async logIn(username: string, password: string): Promise<LoginResult> {
     const response = await this.makePOSTRequest('/api/auth/login/main', {
-      username: username, passwordHash: password
+      username: username, password: password
     }, false);
 
     let result: LoginResult;
@@ -59,9 +59,9 @@ export class AppAuth {
         }
       };
     } else {
-      const responseToken = ((await response.json()) as LoginResponse).token;
+      const data = await response.json() as LoginResponse;
 
-      if(responseToken === '') {
+      if(data.token === '') {
         result = {
           success: false,
           errorMsg: 'Invalid email/password',
@@ -70,13 +70,16 @@ export class AppAuth {
             email: ''
           }
         };
-      } else {
-        const tokenContent: JwtTokenContent = jwtDecode(responseToken);
+      }
+
+      if(data.token !== '') {
+        const tokenString = data.token;
+        const tokenContent: JwtTokenContent = jwtDecode(tokenString);
 
         this.username = tokenContent.username;
         this.email = tokenContent.email;
         this.token = {
-          token: responseToken,
+          token: tokenString,
           expires: tokenContent.exp
         };
 
@@ -113,8 +116,26 @@ export class AppAuth {
   @Method()
   async updateAccount(username: string, email: string, password: string): Promise<UpdateAccountResult>{
     const response = await this.makePOSTRequest('/api/auth/update/main', {
-      username: username, email: email, passwordHash: password
+      username: username, email: email, password: password
     }, true);
+
+    if (response.status === 401) {
+      this.email = "";
+      this.username = "";
+      this.token = undefined;
+
+      return {
+        success: false,
+        errorMsg: "Authorization expired",
+        credentials: {
+          username: "",
+          email: ""
+        },
+        authStatus: {
+          isAuhtorized: false
+        }
+      }
+    }
 
     if (!response.ok) {
       return {
@@ -123,6 +144,9 @@ export class AppAuth {
         credentials: {
           username: '',
           email: ''
+        },
+        authStatus: {
+          isAuhtorized: undefined
         }
       };
     }
@@ -135,11 +159,15 @@ export class AppAuth {
         credentials: {
           username: '',
           email: ''
+        },
+        authStatus: {
+          isAuhtorized: undefined
         }
       };
     }
 
-    const tokenContent: JwtTokenContent = jwtDecode(responseData.token);
+    const tokenString = responseData.token;
+    const tokenContent: JwtTokenContent = jwtDecode(tokenString);
 
     this.username = tokenContent.username;
     this.email = tokenContent.email;
@@ -154,6 +182,9 @@ export class AppAuth {
       credentials: {
         username: this.username,
         email: this.email
+      },
+      authStatus: {
+        isAuhtorized: true
       }
     }
   }

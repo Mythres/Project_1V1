@@ -11,6 +11,7 @@ export class AppNavbar {
 
   @Event() loginModalOpenEvent: EventEmitter;
   @Event() registerModalOpenEvent: EventEmitter;
+  @Event() logoutEvent: EventEmitter;
 
   loginClicked(event: UIEvent) {
     event.preventDefault();
@@ -20,6 +21,11 @@ export class AppNavbar {
   registerClicked(event: UIEvent) {
     event.preventDefault();
     this.registerModalOpenEvent.emit();
+  }
+
+  logoutClicked(event) {
+    event.preventDefault();
+    this.logoutEvent.emit();
   }
 
   render() {
@@ -39,12 +45,19 @@ export class AppNavbar {
             <div class="o-grid__cell o-grid__cell--width-25">
               <ul>
               {this.isAuthenticated
-              ? <li class="flexRight"><stencil-route-link url="/profile" exact={true}>{this.username}</stencil-route-link></li>
+              ? [
+                <li class="flexRight">
+                  <stencil-route-link url="/profile" exact={true}>{this.username}</stencil-route-link>
+                </li>,
+                <li>
+                  <a onClick={(event: UIEvent) => this.logoutClicked(event)} class="pointer">Log out</a>
+                </li>
+                ]
               : [
                   <li onClick = {(event: UIEvent) => this.loginClicked(event)} class="flexRight pointer"><a>Log In</a></li>,
                   <li onClick = {(event: UIEvent) => this.registerClicked(event)} class="pointer"><a>Register</a></li>
                 ]
-            }
+              }
               </ul>
             </div>
           </div>

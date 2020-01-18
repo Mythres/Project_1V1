@@ -28,6 +28,8 @@ export class AppRegister {
   @Method()
   async showDialog() {
     if (!(await this.modalRef.isOpen())) {
+      await this.clearForm();
+      await this.closeMessages();
       await this.modalRef.show();
     }
   }

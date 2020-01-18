@@ -183,6 +183,7 @@ declare namespace LocalJSX {
   interface AppNavbar {
     'isAuthenticated'?: boolean;
     'onLoginModalOpenEvent'?: (event: CustomEvent<any>) => void;
+    'onLogoutEvent'?: (event: CustomEvent<any>) => void;
     'onRegisterModalOpenEvent'?: (event: CustomEvent<any>) => void;
     'username'?: string;
   }
