@@ -1,9 +1,10 @@
+@import "node_modules/@blaze/css/src/scss/blaze";
+
 a {
   display: block;
   height: calc(5em - 1px);
   line-height: 5em;
   padding: 10px;
-  font-family: 'Graduate', cursive;
   text-decoration: none;
   color: white;
 }
@@ -15,15 +16,13 @@ nav {
 }
 
 ul {
-  height: calc(100% - 2px);
+  height: 100%;
   margin-top: 0;
   padding: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   list-style-type: none;
-  border-top: 1px solid #4e6069;
-  border-bottom: 1px solid #4e6069;
 }
 
 li:last-child {
@@ -42,4 +41,49 @@ li {
 
 li:hover {
   background-color: #43545c
+}
+
+.o-grid {
+  height: 100%;
+}
+
+.o-grid__cell {
+  padding: 0;
+  border-bottom: 1px solid #4e6069;
+}
+
+.grid__cell {
+  padding: 0;
+}
+
+.flexRight {
+  margin-left: auto;
+}
+
+.flexLeft {
+  margin-right: auto;
+}
+
+.flexLeft\@large {
+  @media (max-width: 64em) {
+    margin-right: auto;
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.noBorderRight {
+  border-right: 0;
+}
+
+#placeholder {
+  @media (max-width: 64em) {
+    display: none;
+  }
 }

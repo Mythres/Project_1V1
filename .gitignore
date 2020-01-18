@@ -1,3 +1,8 @@
 node_modules
 www
 .stencil
+.idea
+.env
+.now
+/jwtRS256.key
+/jwtRS256.key.pub

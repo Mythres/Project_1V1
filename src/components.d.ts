@@ -7,20 +7,94 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  RegisterResult,
+} from './components/app-auth/interfaces/RegisterResult';
+import {
+  LoginResult,
+} from './components/app-auth/interfaces/LoginResult';
+import {
+  LoginResponse,
+} from './components/app-auth/interfaces/LoginResponse';
+import {
+  JwtTokenContent,
+} from './components/app-auth/interfaces/JwtTokenContent';
+import {
+  ForgotPasswordResult,
+} from './components/app-auth/interfaces/ForgotPasswordResult';
+import {
+  UpdateAccountResult,
+} from './components/app-auth/interfaces/UpdateAccountResult';
+import {
+  UpdateAccountResponse,
+} from './components/app-auth/interfaces/UpdateAccountResponse';
+import {
+  AuthCredentials,
+} from './components/app-auth/interfaces/AuthCredentials';
+import {
+  AlertType,
+} from './utils/AlertType';
+import {
+  RouterHistory,
+} from '@stencil/router';
 
 export namespace Components {
+  interface AppAuth {
+    'forgotPassword': (email: string) => Promise<ForgotPasswordResult>;
+    'getCredentials': () => Promise<AuthCredentials>;
+    'isLoggedIn': () => Promise<boolean>;
+    'logIn': (username: string, password: string) => Promise<LoginResult>;
+    'logOut': () => Promise<void>;
+    'register': (username: string, email: string, password: string) => Promise<RegisterResult>;
+    'updateAccount': (username: string, email: string, password: string) => Promise<UpdateAccountResult>;
+  }
   interface AppConstruction {}
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
-  interface AppNavbar {}
+  interface AppLogin {
+    'clearForm': () => Promise<void>;
+    'closeDialog': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
+    'showDialog': () => Promise<void>;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
+  }
+  interface AppNavbar {
+    'isAuthenticated': boolean;
+    'username': string;
+  }
   interface AppNews {}
-  interface AppRoot {}
+  interface AppProfile {
+    'clearForm': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
+    'email': string;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
+    'username': string;
+  }
+  interface AppRegister {
+    'clearForm': () => Promise<void>;
+    'closeDialog': () => Promise<void>;
+    'closeMessage': (alertType: AlertType) => Promise<void>;
+    'closeMessages': () => Promise<void>;
+    'history': RouterHistory;
+    'showDialog': () => Promise<void>;
+    'showMessage': (alertType: AlertType, text: string) => Promise<void>;
+  }
+  interface AppRoot {
+    'history': RouterHistory;
+  }
 }
 
 declare global {
 
+
+  interface HTMLAppAuthElement extends Components.AppAuth, HTMLStencilElement {}
+  var HTMLAppAuthElement: {
+    prototype: HTMLAppAuthElement;
+    new (): HTMLAppAuthElement;
+  };
 
   interface HTMLAppConstructionElement extends Components.AppConstruction, HTMLStencilElement {}
   var HTMLAppConstructionElement: {
@@ -46,6 +120,12 @@ declare global {
     new (): HTMLAppInfoElement;
   };
 
+  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
+  var HTMLAppLoginElement: {
+    prototype: HTMLAppLoginElement;
+    new (): HTMLAppLoginElement;
+  };
+
   interface HTMLAppNavbarElement extends Components.AppNavbar, HTMLStencilElement {}
   var HTMLAppNavbarElement: {
     prototype: HTMLAppNavbarElement;
@@ -58,38 +138,79 @@ declare global {
     new (): HTMLAppNewsElement;
   };
 
+  interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
+  var HTMLAppProfileElement: {
+    prototype: HTMLAppProfileElement;
+    new (): HTMLAppProfileElement;
+  };
+
+  interface HTMLAppRegisterElement extends Components.AppRegister, HTMLStencilElement {}
+  var HTMLAppRegisterElement: {
+    prototype: HTMLAppRegisterElement;
+    new (): HTMLAppRegisterElement;
+  };
+
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
   };
   interface HTMLElementTagNameMap {
+    'app-auth': HTMLAppAuthElement;
     'app-construction': HTMLAppConstructionElement;
     'app-game': HTMLAppGameElement;
     'app-home': HTMLAppHomeElement;
     'app-info': HTMLAppInfoElement;
+    'app-login': HTMLAppLoginElement;
     'app-navbar': HTMLAppNavbarElement;
     'app-news': HTMLAppNewsElement;
+    'app-profile': HTMLAppProfileElement;
+    'app-register': HTMLAppRegisterElement;
     'app-root': HTMLAppRootElement;
   }
 }
 
 declare namespace LocalJSX {
+  interface AppAuth {}
   interface AppConstruction {}
   interface AppGame {}
   interface AppHome {}
   interface AppInfo {}
-  interface AppNavbar {}
+  interface AppLogin {
+    'onForgotPasswordBtnClicked'?: (event: CustomEvent<any>) => void;
+    'onLoginBtnClicked'?: (event: CustomEvent<any>) => void;
+  }
+  interface AppNavbar {
+    'isAuthenticated'?: boolean;
+    'onLoginModalOpenEvent'?: (event: CustomEvent<any>) => void;
+    'onRegisterModalOpenEvent'?: (event: CustomEvent<any>) => void;
+    'username'?: string;
+  }
   interface AppNews {}
-  interface AppRoot {}
+  interface AppProfile {
+    'email'?: string;
+    'onUpdateAccountBtnClicked'?: (event: CustomEvent<any>) => void;
+    'username'?: string;
+  }
+  interface AppRegister {
+    'history'?: RouterHistory;
+    'onRegisterBtnClicked'?: (event: CustomEvent<any>) => void;
+  }
+  interface AppRoot {
+    'history'?: RouterHistory;
+  }
 
   interface IntrinsicElements {
+    'app-auth': AppAuth;
     'app-construction': AppConstruction;
     'app-game': AppGame;
     'app-home': AppHome;
     'app-info': AppInfo;
+    'app-login': AppLogin;
     'app-navbar': AppNavbar;
     'app-news': AppNews;
+    'app-profile': AppProfile;
+    'app-register': AppRegister;
     'app-root': AppRoot;
   }
 }
@@ -100,12 +221,16 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
   export namespace JSX {
     interface IntrinsicElements {
+      'app-auth': LocalJSX.AppAuth & JSXBase.HTMLAttributes<HTMLAppAuthElement>;
       'app-construction': LocalJSX.AppConstruction & JSXBase.HTMLAttributes<HTMLAppConstructionElement>;
       'app-game': LocalJSX.AppGame & JSXBase.HTMLAttributes<HTMLAppGameElement>;
       'app-home': LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
       'app-info': LocalJSX.AppInfo & JSXBase.HTMLAttributes<HTMLAppInfoElement>;
+      'app-login': LocalJSX.AppLogin & JSXBase.HTMLAttributes<HTMLAppLoginElement>;
       'app-navbar': LocalJSX.AppNavbar & JSXBase.HTMLAttributes<HTMLAppNavbarElement>;
       'app-news': LocalJSX.AppNews & JSXBase.HTMLAttributes<HTMLAppNewsElement>;
+      'app-profile': LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
+      'app-register': LocalJSX.AppRegister & JSXBase.HTMLAttributes<HTMLAppRegisterElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
     }
   }

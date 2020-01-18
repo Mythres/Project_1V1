@@ -1,0 +1,34 @@
+@import "node_modules/@blaze/css/src/scss/blaze";
+
+button {
+  cursor: pointer;
+}
+
+.o-modal[role=dialog] {
+  width: 25em !important;
+}
+
+.c-alert {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  margin: var(--spacing-medium) 0 0 !important;
+  padding-right: var(--spacing-medium)!important;
+}
+
+.c-card__footer {
+  padding-right: 0;
+}
+
+.c-field {
+  box-sizing: border-box;
+}
+
+.c-button {
+  box-sizing: border-box;
+}
+
+#forgotPasswordBtn {
+  cursor: pointer;
+  text-decoration-line: underline;
+}

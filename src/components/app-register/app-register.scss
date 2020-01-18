@@ -1,0 +1,25 @@
+@import "node_modules/@blaze/css/src/scss/blaze";
+
+button {
+  cursor: pointer;
+}
+
+.o-modal[role=dialog] {
+  width: 25em !important;
+}
+
+.c-alert {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  margin: var(--spacing-medium) 0 0 !important;
+  padding-right: var(--spacing-medium)!important;
+}
+
+.c-field {
+  box-sizing: border-box;
+}
+
+.c-button {
+  box-sizing: border-box;
+}

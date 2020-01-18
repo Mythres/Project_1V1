@@ -1,7 +1,22 @@
 {
   "functions": {
-    "api/test.js": {
+    "api/auth/login/main.go": {
+      "memory": 128
+    },
+    "api/auth/register/main.go": {
+      "memory": 128
+    },
+    "api/auth/update/main.go": {
+      "memory": 128
+    },
+    "api/auth/forgot/main.go": {
       "memory": 128
     }
-  }
+  },
+  "env": {
+    "JWT_PUBLIC": "@1v1-jwt-publickey",
+    "JWT_PRIVATE": "@1v1-jwt-privatekey"
+  },
+  "regions": ["cdg1"],
+  "trailingSlash": false
 }
