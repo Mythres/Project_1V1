@@ -4,7 +4,6 @@ import (
   "encoding/json"
   f "github.com/fauna/faunadb-go/faunadb"
   "net/http"
-  "net/smtp"
   "os"
   "regexp"
 )
