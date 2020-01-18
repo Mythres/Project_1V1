@@ -13,6 +13,7 @@ button {
   box-sizing: border-box;
   text-align: center;
   margin: var(--spacing-medium) 0 0 !important;
+  padding-right: var(--spacing-medium)!important;
 }
 
 .c-card__footer {

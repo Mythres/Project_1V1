@@ -115,7 +115,6 @@ export class AppRoot {
 
     if (result.success) {
       await this.appLoginRef.showMessage(AlertType.Success, "Please check your email");
-      return;
     } else {
       await this.appLoginRef.showMessage(AlertType.Error, result.errorMsg);
     }
@@ -124,11 +123,13 @@ export class AppRoot {
   @Listen('updateAccountBtnClicked')
   async updateAccountBtnClickedHandler(event: CustomEvent) {
     const info: UpdateAccountInformation = event.detail;
-    const result = await this.appAuthRef.updateAccount(info.email, info.username, info.password);
+    const result = await this.appAuthRef.updateAccount(info.username, info.email, info.password);
 
     if (result.success) {
+      this.username = result.credentials.username;
+      this.email = result.credentials.email;
+
       await this.appProfileRef.showMessage(AlertType.Success, "Account details updated successfully");
-      return;
     } else {
       await this.appProfileRef.showMessage(AlertType.Error, result.errorMsg);
     }

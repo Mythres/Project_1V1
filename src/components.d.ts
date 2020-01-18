@@ -14,8 +14,20 @@ import {
   LoginResult,
 } from './components/app-auth/interfaces/LoginResult';
 import {
+  LoginResponse,
+} from './components/app-auth/interfaces/LoginResponse';
+import {
+  JwtTokenContent,
+} from './components/app-auth/interfaces/JwtTokenContent';
+import {
   ForgotPasswordResult,
 } from './components/app-auth/interfaces/ForgotPasswordResult';
+import {
+  UpdateAccountResult,
+} from './components/app-auth/interfaces/UpdateAccountResult';
+import {
+  UpdateAccountResponse,
+} from './components/app-auth/interfaces/UpdateAccountResponse';
 import {
   AuthCredentials,
 } from './components/app-auth/interfaces/AuthCredentials';
@@ -28,13 +40,13 @@ import {
 
 export namespace Components {
   interface AppAuth {
-    'forgotPassword': (_email: string) => Promise<ForgotPasswordResult>;
+    'forgotPassword': (email: string) => Promise<ForgotPasswordResult>;
     'getCredentials': () => Promise<AuthCredentials>;
     'isLoggedIn': () => Promise<boolean>;
-    'logIn': (_username: string, _password: string) => Promise<LoginResult>;
+    'logIn': (username: string, password: string) => Promise<LoginResult>;
     'logOut': () => Promise<void>;
-    'register': (_username: string, _email: string, _password: string) => Promise<RegisterResult>;
-    'updateAccount': (_email: string, _username: string, _password: string) => Promise<{ success: boolean; errorMsg: string; }>;
+    'register': (username: string, email: string, password: string) => Promise<RegisterResult>;
+    'updateAccount': (username: string, email: string, password: string) => Promise<UpdateAccountResult>;
   }
   interface AppConstruction {}
   interface AppGame {}
