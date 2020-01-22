@@ -1,11 +1,10 @@
-#gameContent {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@import "node_modules/@blaze/css/src/scss/blaze";
+
+.o-grid {
+  height: calc(80vh);
 }
 
-iframe {
-  border: 1px solid #4e6069;
+#gameContent {
+  width: 100%;
+  background: none !important;
 }

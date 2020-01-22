@@ -29,8 +29,14 @@ import {
   UpdateAccountResponse,
 } from './components/app-auth/interfaces/UpdateAccountResponse';
 import {
+  GetMatchResult,
+} from './components/app-auth/interfaces/GetMatchResult';
+import {
   AuthCredentials,
 } from './components/app-auth/interfaces/AuthCredentials';
+import {
+  GetMatchResponse,
+} from './components/app-auth/interfaces/GetMatchResponse';
 import {
   AlertType,
 } from './utils/AlertType';
@@ -40,6 +46,7 @@ import {
 
 export namespace Components {
   interface AppAuth {
+    'GetMatch': () => Promise<GetMatchResult>;
     'forgotPassword': (email: string) => Promise<ForgotPasswordResult>;
     'getCredentials': () => Promise<AuthCredentials>;
     'isLoggedIn': () => Promise<boolean>;
@@ -49,7 +56,11 @@ export namespace Components {
     'updateAccount': (username: string, email: string, password: string) => Promise<UpdateAccountResult>;
   }
   interface AppConstruction {}
-  interface AppGame {}
+  interface AppGame {
+    'SetMatchDetails': (data: GetMatchResponse) => Promise<void>;
+    'SetUsername': (username: string) => Promise<void>;
+    'username': string;
+  }
   interface AppHome {}
   interface AppInfo {}
   interface AppLogin {
@@ -83,6 +94,7 @@ export namespace Components {
     'showMessage': (alertType: AlertType, text: string) => Promise<void>;
   }
   interface AppRoot {
+    'GetGameMatch': () => Promise<void>;
     'history': RouterHistory;
   }
 }
@@ -173,7 +185,9 @@ declare global {
 declare namespace LocalJSX {
   interface AppAuth {}
   interface AppConstruction {}
-  interface AppGame {}
+  interface AppGame {
+    'username'?: string;
+  }
   interface AppHome {}
   interface AppInfo {}
   interface AppLogin {

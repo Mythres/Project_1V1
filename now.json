@@ -18,5 +18,12 @@
     "JWT_PRIVATE": "@1v1-jwt-privatekey"
   },
   "regions": ["cdg1"],
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/auth/forgot", "destination": "/api/auth/forgot/main" },
+    { "source": "/api/auth/login", "destination": "/api/auth/login/main" },
+    { "source": "/api/auth/register", "destination": "/api/auth/register/main" },
+    { "source": "/api/auth/update", "destination": "/api/auth/update/main" },
+    { "source": "/api/game/match", "destination": "/api/game/match/main" }
+  ]
 }

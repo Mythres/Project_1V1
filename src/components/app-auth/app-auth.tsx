@@ -9,6 +9,7 @@ import {JwtToken} from "./interfaces/JwtToken";
 import {JwtTokenContent} from "./interfaces/JwtTokenContent";
 import {UpdateAccountResult} from "./interfaces/UpdateAccountResult";
 import {UpdateAccountResponse} from "./interfaces/UpdateAccountResponse";
+import {GetMatchResult} from "./interfaces/GetMatchResult";
 
 @Component({
   tag: 'app-auth',
@@ -27,7 +28,7 @@ export class AppAuth {
 
   @Method()
   async register(username: string, email: string, password: string): Promise<RegisterResult> {
-    const response = await this.makePOSTRequest('/api/auth/register/main',{
+    const response = await this.makePOSTRequest('/api/auth/register',{
       username: username, email: email, password: password
     }, false);
 
@@ -43,7 +44,7 @@ export class AppAuth {
 
   @Method()
   async logIn(username: string, password: string): Promise<LoginResult> {
-    const response = await this.makePOSTRequest('/api/auth/login/main', {
+    const response = await this.makePOSTRequest('/api/auth/login', {
       username: username, password: password
     }, false);
 
@@ -99,7 +100,7 @@ export class AppAuth {
 
   @Method()
   async forgotPassword(email: string): Promise<ForgotPasswordResult> {
-    const response = await this.makePOSTRequest("/api/auth/forgot/main", {
+    const response = await this.makePOSTRequest("/api/auth/forgot", {
       email: email
     }, false);
 
@@ -115,7 +116,21 @@ export class AppAuth {
 
   @Method()
   async updateAccount(username: string, email: string, password: string): Promise<UpdateAccountResult>{
-    const response = await this.makePOSTRequest('/api/auth/update/main', {
+    if(!this.token) {
+      return {
+        success: false,
+        errorMsg: "Authorization expired",
+        credentials: {
+          username: "",
+          email: ""
+        },
+        authStatus: {
+          isAuhtorized: false
+        }
+      };
+    }
+
+    const response = await this.makePOSTRequest('/api/auth/update', {
       username: username, email: email, password: password
     }, true);
 
@@ -187,6 +202,67 @@ export class AppAuth {
         isAuhtorized: true
       }
     }
+  }
+
+  @Method()
+  async GetMatch(): Promise<GetMatchResult> {
+    if(!this.token) {
+      return {
+        success: false,
+        authStatus: {
+          isAuhtorized: false
+        },
+        data: {
+          playerSessionId: undefined,
+          ipAddress: undefined,
+          port: undefined
+        }
+      };
+    }
+
+    const response = await this.makePOSTRequest('/api/game/match',{}, true);
+
+    if (response.status === 401) {
+      this.email = "";
+      this.username = "";
+      this.token = undefined;
+
+      return {
+        success: false,
+        authStatus: {
+          isAuhtorized: false
+        },
+        data: {
+          playerSessionId: undefined,
+          ipAddress: undefined,
+          port: undefined
+        }
+      };
+    }
+
+    if (!response.ok) {
+      return {
+        success: false,
+        authStatus: {
+          isAuhtorized: true
+        },
+        data: {
+          playerSessionId: undefined,
+          ipAddress: undefined,
+          port: undefined
+        }
+      };
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      authStatus: {
+        isAuhtorized: true
+      },
+      data: data
+    };
   }
 
   @Method()

@@ -1,4 +1,4 @@
-import {Component, h, Listen, Prop, State} from '@stencil/core';
+import {Component, h, Listen, Method, Prop, State} from '@stencil/core';
 import {injectHistory, RouterHistory} from "@stencil/router";
 import {PrivateRoute} from "./PrivateRoute/PrivateRoute";
 import {AlertType} from "../../utils/AlertType";
@@ -24,6 +24,7 @@ export class AppRoot {
   appAuthRef!: HTMLAppAuthElement;
   appLoginRef: HTMLAppLoginElement;
   appRegisterRef: HTMLAppRegisterElement;
+  appGameRef: HTMLAppGameElement;
   appProfileRef: HTMLAppProfileElement;
 
   componentWillLoad() {
@@ -111,6 +112,7 @@ export class AppRoot {
 
       this.username = result.credentials.username;
       this.email = result.credentials.email;
+
       this.isAuthenticated = true;
       await this.appLoginRef.closeDialog();
       return;
@@ -119,6 +121,7 @@ export class AppRoot {
     await this.appLoginRef.showMessage(AlertType.Error, result.errorMsg);
   }
 
+  // From app-forgot
   @Listen('forgotPasswordBtnClicked')
   async forgotPasswordBtnClickedHandler(event: CustomEvent) {
     const info: ForgotPasswordInformation = event.detail;
@@ -131,6 +134,7 @@ export class AppRoot {
     }
   }
 
+  // From app-update
   @Listen('updateAccountBtnClicked')
   async updateAccountBtnClickedHandler(event: CustomEvent) {
     const info: UpdateAccountInformation = event.detail;
@@ -142,7 +146,7 @@ export class AppRoot {
 
       await this.appProfileRef.showMessage(AlertType.Success, "Account details updated successfully");
     }
-    else if(result.authStatus.isAuhtorized === false) {
+    else if(!result.authStatus.isAuhtorized) {
       this.username = "";
       this.email = "";
       this.isAuthenticated = false;
@@ -157,15 +161,33 @@ export class AppRoot {
     }
   }
 
+  // From app-navbar
   @Listen('logoutEvent')
   async logoutEventHandler() {
     this.username = "";
     this.email = "";
+
     this.isAuthenticated = false;
     await this.appAuthRef.logOut();
 
     if (window.location.pathname.endsWith('/profile')) {
-      this.history.push('/dev')
+      this.history.push('/dev');
+    }
+  }
+
+  @Method()
+  async GetGameMatch() {
+    const result = await this.appAuthRef.GetMatch();
+    if (result.success) {
+      await this.appGameRef.SetMatchDetails(result.data)
+    }
+    else if (!result.authStatus.isAuhtorized) {
+      this.username = "";
+      this.email = "";
+      this.isAuthenticated = false;
+      await this.appAuthRef.logOut();
+
+      this.history.push('/game/login')
     }
   }
 
@@ -183,7 +205,10 @@ export class AppRoot {
                 <stencil-route url={['/dev', '/dev/login', '/dev/register']} component='app-home' exact={true}/>
                 <stencil-route url={['/gameinfo', '/gameinfo/login', '/gameinfo/register']} component='app-info' exact={true}/>
                 <stencil-route url={['/news', '/news/login', '/news/register']} component='app-news' exact={true}/>
-                <stencil-route url={['/game', '/game/login', '/game/register']} component='app-game' exact={true}/>
+                <stencil-route url={['/game', '/game/login', '/game/register']} component='app-game'
+                               componentProps={{
+                                 'ref': (el) => this.appGameRef = el as HTMLAppGameElement,
+                                 'username': this.username}} exact={true}/>
                 <PrivateRoute
                   isAuthenticated={this.isAuthenticated}
                   url="/profile"
@@ -191,7 +216,7 @@ export class AppRoot {
                   exact={true}
                   component='app-profile'
                   componentProps={{'username': this.username, 'email': this.email,
-                    'ref':(el) => this.appProfileRef = el as HTMLAppProfileElement}}
+                    'ref': (el) => this.appProfileRef = el as HTMLAppProfileElement}}
                 />
               </stencil-route-switch>
             </stencil-router>
