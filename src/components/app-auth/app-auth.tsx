@@ -214,7 +214,7 @@ export class AppAuth {
         },
         data: {
           playerSessionId: undefined,
-          ipAddress: undefined,
+          dnsName: undefined,
           port: undefined
         }
       };
@@ -234,7 +234,7 @@ export class AppAuth {
         },
         data: {
           playerSessionId: undefined,
-          ipAddress: undefined,
+          dnsName: undefined,
           port: undefined
         }
       };
@@ -248,7 +248,7 @@ export class AppAuth {
         },
         data: {
           playerSessionId: undefined,
-          ipAddress: undefined,
+          dnsName: undefined,
           port: undefined
         }
       };

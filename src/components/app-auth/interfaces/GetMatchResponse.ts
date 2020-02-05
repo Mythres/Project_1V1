@@ -1,5 +1,5 @@
 export interface GetMatchResponse {
   playerSessionId: string
-  ipAddress: string
+  dnsName: string
   port: string
 }

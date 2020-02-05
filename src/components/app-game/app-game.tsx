@@ -44,7 +44,7 @@ export class AppGame {
 
   @Method()
   async SetMatchDetails(data: GetMatchResponse) {
-    this.unityInstance.SendMessage('NetworkManager', 'StartClientOnDemand', `${data.playerSessionId}|${data.ipAddress}|${data.port}`);
+    this.unityInstance.SendMessage('NetworkManager', 'StartClientOnDemand', `${data.playerSessionId}|${data.dnsName}|${data.port}`);
   }
 
   render() {

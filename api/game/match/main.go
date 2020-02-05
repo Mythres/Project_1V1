@@ -15,7 +15,7 @@ import (
 
 type response struct {
   PlayerSessionId string `json:"playerSessionId"`
-  IpAddress string `json:"ipAddress"`
+  DnsName string `json:"dnsName"`
   Port string `json:"port"`
 }
 
@@ -51,7 +51,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   }
 
   filterExpression := "hasAvailablePlayerSessions=true"
-  fleetId := "fleet-a0f04f62-db46-498f-8bd3-689a62aaa5f8"
+  fleetId := "fleet-47f8ffa7-7d91-4bc9-900b-cae21834b738"
   var limit int64 = 1
 
   out, err := svc.SearchGameSessions(&gamelift.SearchGameSessionsInput{
@@ -107,7 +107,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
 
   playerSessionData := response{
     *pOut.PlayerSession.PlayerSessionId,
-    *pOut.PlayerSession.IpAddress,
+    *pOut.PlayerSession.DnsName,
     strconv.FormatInt(*pOut.PlayerSession.Port, 10),
   }
 
