@@ -51,7 +51,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   }
 
   filterExpression := "hasAvailablePlayerSessions=true"
-  fleetId := "fleet-10e15ece-b73f-4ec5-9899-7d6d85aad54a"
+  fleetId := "fleet-a0f04f62-db46-498f-8bd3-689a62aaa5f8"
   var limit int64 = 1
 
   out, err := svc.SearchGameSessions(&gamelift.SearchGameSessionsInput{
