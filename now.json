@@ -11,6 +11,9 @@
     },
     "api/auth/forgot/main.go": {
       "memory": 128
+    },
+    "api/game/match/main.go": {
+      "memory": 128
     }
   },
   "env": {
