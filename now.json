@@ -15,7 +15,9 @@
   },
   "env": {
     "JWT_PUBLIC": "@1v1-jwt-publickey",
-    "JWT_PRIVATE": "@1v1-jwt-privatekey"
+    "JWT_PRIVATE": "@1v1-jwt-privatekey",
+    "AWS_GAMELIFT_ACCESS_KEY_ID": "@aws-gamelift-key-id",
+    "AWS_GAMELIFT_SECRET_KEY": "@aws-gamelift-secret-key"
   },
   "regions": ["cdg1"],
   "trailingSlash": false,
@@ -25,5 +27,9 @@
     { "source": "/api/auth/register", "destination": "/api/auth/register/main" },
     { "source": "/api/auth/update", "destination": "/api/auth/update/main" },
     { "source": "/api/game/match", "destination": "/api/game/match/main" }
+  ],
+  "redirects": [
+    { "source": "/", "destination":  "/dev" },
+    { "source": "", "destination": "/dev"}
   ]
 }

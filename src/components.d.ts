@@ -76,6 +76,7 @@ export namespace Components {
     'username': string;
   }
   interface AppNews {}
+  interface AppNotfound {}
   interface AppProfile {
     'clearForm': () => Promise<void>;
     'closeMessage': (alertType: AlertType) => Promise<void>;
@@ -95,6 +96,7 @@ export namespace Components {
   }
   interface AppRoot {
     'GetGameMatch': () => Promise<void>;
+    'GetGameUsername': () => Promise<void>;
     'history': RouterHistory;
   }
 }
@@ -150,6 +152,12 @@ declare global {
     new (): HTMLAppNewsElement;
   };
 
+  interface HTMLAppNotfoundElement extends Components.AppNotfound, HTMLStencilElement {}
+  var HTMLAppNotfoundElement: {
+    prototype: HTMLAppNotfoundElement;
+    new (): HTMLAppNotfoundElement;
+  };
+
   interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
   var HTMLAppProfileElement: {
     prototype: HTMLAppProfileElement;
@@ -176,6 +184,7 @@ declare global {
     'app-login': HTMLAppLoginElement;
     'app-navbar': HTMLAppNavbarElement;
     'app-news': HTMLAppNewsElement;
+    'app-notfound': HTMLAppNotfoundElement;
     'app-profile': HTMLAppProfileElement;
     'app-register': HTMLAppRegisterElement;
     'app-root': HTMLAppRootElement;
@@ -202,6 +211,7 @@ declare namespace LocalJSX {
     'username'?: string;
   }
   interface AppNews {}
+  interface AppNotfound {}
   interface AppProfile {
     'email'?: string;
     'onUpdateAccountBtnClicked'?: (event: CustomEvent<any>) => void;
@@ -224,6 +234,7 @@ declare namespace LocalJSX {
     'app-login': AppLogin;
     'app-navbar': AppNavbar;
     'app-news': AppNews;
+    'app-notfound': AppNotfound;
     'app-profile': AppProfile;
     'app-register': AppRegister;
     'app-root': AppRoot;
@@ -244,6 +255,7 @@ declare module "@stencil/core" {
       'app-login': LocalJSX.AppLogin & JSXBase.HTMLAttributes<HTMLAppLoginElement>;
       'app-navbar': LocalJSX.AppNavbar & JSXBase.HTMLAttributes<HTMLAppNavbarElement>;
       'app-news': LocalJSX.AppNews & JSXBase.HTMLAttributes<HTMLAppNewsElement>;
+      'app-notfound': LocalJSX.AppNotfound & JSXBase.HTMLAttributes<HTMLAppNotfoundElement>;
       'app-profile': LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
       'app-register': LocalJSX.AppRegister & JSXBase.HTMLAttributes<HTMLAppRegisterElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;

@@ -50,9 +50,14 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
     return
   }
 
-  out, err := svc.DescribeGameSessions(&gamelift.DescribeGameSessionsInput{
-    FleetId: aws.String("fleet-123"),
-    StatusFilter: aws.String("ACTIVE"),
+  filterExpression := "hasAvailablePlayerSessions=true"
+  fleetId := "fleet-41570629-90bf-4806-86a8-173968c66712"
+  var limit int64 = 1
+
+  out, err := svc.SearchGameSessions(&gamelift.SearchGameSessionsInput{
+    FilterExpression: &filterExpression,
+    FleetId:          &fleetId,
+    Limit:            &limit,
   })
 
   if handleError(&rw, err, http.StatusInternalServerError) {
@@ -64,7 +69,7 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   } else {
     out, err := svc.CreateGameSession(&gamelift.CreateGameSessionInput{
       CreatorId:                 aws.String(claims.Username),
-      FleetId:                   aws.String("fleet-123"),
+      FleetId:                   aws.String(fleetId),
       MaximumPlayerSessionCount: aws.Int64(2),
     })
 
@@ -76,9 +81,10 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
   }
 
   for {
-    out, err := svc.DescribeGameSessions(&gamelift.DescribeGameSessionsInput{
-      FleetId: aws.String("fleet-123"),
-      StatusFilter: aws.String("ACTIVE"),
+    out, err := svc.SearchGameSessions(&gamelift.SearchGameSessionsInput{
+      FilterExpression: &filterExpression,
+      FleetId:          &fleetId,
+      Limit:            &limit,
     })
 
     if handleError(&rw, err, http.StatusInternalServerError) {
@@ -117,11 +123,13 @@ func Handler(rw http.ResponseWriter, r *http.Request) {
 }
 
 func startGameLiftSession() (*gamelift.GameLift, error) {
+  id := os.Getenv("AWS_GAMELIFT_ACCESS_KEY_ID")
+  secret := os.Getenv("AWS_GAMELIFT_SECRET_KEY")
+
   sess, err := session.NewSession(&aws.Config{
-    Credentials:                       credentials.NewStaticCredentials("id1", "secret1", "tok1"),
-    Endpoint:                          aws.String("http://localhost:8080"),
+    Credentials:                       credentials.NewStaticCredentials(id, secret, ""),
+    Endpoint:                          aws.String(""),
     Region:                            aws.String("eu-central-1"),
-    DisableSSL:                        aws.Bool(true),
     LogLevel:                          aws.LogLevel(1),
     DisableEndpointHostPrefix:         nil,
   })

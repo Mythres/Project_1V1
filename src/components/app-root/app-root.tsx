@@ -29,6 +29,8 @@ export class AppRoot {
 
   componentWillLoad() {
     this.isConstruction = window.location.pathname === '/';
+    this.username = "";
+    this.email = "";
   }
 
   async componentDidLoad() {
@@ -191,6 +193,11 @@ export class AppRoot {
     }
   }
 
+  @Method()
+  async GetGameUsername() {
+    await this.appGameRef.SetUsername(this.username);
+  }
+
   render() {
     return (
       <main>
@@ -218,6 +225,7 @@ export class AppRoot {
                   componentProps={{'username': this.username, 'email': this.email,
                     'ref': (el) => this.appProfileRef = el as HTMLAppProfileElement}}
                 />
+                <stencil-route component='app-notfound' />
               </stencil-route-switch>
             </stencil-router>
           </div>
